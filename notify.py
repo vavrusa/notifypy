@@ -24,7 +24,9 @@ if cfg.has_option('Global', 'first-run'):
 
 # Load APIs
 print 'Loading APIs ...'
-api_cfg = cfg.get('Global', 'api').split(' ')
-api_list = []
-for api_id in api_cfg:
-   api_list.append(api.load(api_id, cfg))
+notificator = api.Notificator(cfg)
+for api_id in cfg.get('Global', 'api').split(' '):
+   notificator.load(api_id)
+
+# Test notify
+notificator.notify('autor', 'pokusna zprava')
