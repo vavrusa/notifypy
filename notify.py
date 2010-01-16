@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import ConfigParser, os
+import api
 
 # Defaults
 config_path = '~/.notifypy.cfg'
@@ -21,3 +22,9 @@ if cfg.has_option('Global', 'first-run'):
    print '[!!] Please remove \'first-run\' option before use.'
    exit(1)
 
+# Load APIs
+print 'Loading APIs ...'
+api_cfg = cfg.get('Global', 'api').split(' ')
+api_list = []
+for api_id in api_cfg:
+   api_list.append(api.load(api_id, cfg))
