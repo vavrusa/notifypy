@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import ConfigParser, os
-import api
+import api, modules
 
 # Defaults
 config_path = '~/.notifypy.cfg'
 
 # Read configuration
-print 'Configuration:', config_path
+header = 'NotifyPy (configuration: %s)' % config_path
+print header
+print ''.center(len(header), '-')
 cfg = ConfigParser.ConfigParser()
 if len(cfg.read(os.path.expanduser(config_path))) is 0:
 
@@ -23,10 +25,19 @@ if cfg.has_option('Global', 'first-run'):
    exit(1)
 
 # Load APIs
-print 'Loading APIs ...'
+api_list = cfg.get('Global', 'api').split(' ')
+print 'Loading APIs (%s) ...' % ' '.join(api_list)
 notificator = api.Notificator(cfg)
-for api_id in cfg.get('Global', 'api').split(' '):
+for api_id in api_list:
    notificator.load(api_id)
 
-# Test notify
-notificator.notify('autor', 'pokusna zprava')
+# Load modules
+mod_list = cfg.get('Global', 'modules').split(' ')
+print 'Loading modules (%s) ...' % ' '.join(mod_list)
+manager = modules.Manager(cfg, notificator)
+for mod_id in mod_list:
+   manager.load(mod_id)
+
+# Run modules
+print 'Running %i modules.' % len(manager.list)
+manager.run()

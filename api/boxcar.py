@@ -31,6 +31,12 @@ class API (BaseAPI):
          data['notification[from_remote_service_id]'] = service
 
       ''' Encode data and send notification. '''
-      data = urllib.urlencode(data)
-      page = self.requester.open(self.config.get('API/Boxcar', 'url'), data)
+      try:
+         data = urllib.urlencode(data)
+         page = self.requester.open(self.config.get('API/Boxcar', 'url'),
+	  		            data)
+      except urllib2.HTTPError, e:
+         print '[!!] Failed to notify Boxcar (code %i)' % e.code
+         return False
+
       return True
