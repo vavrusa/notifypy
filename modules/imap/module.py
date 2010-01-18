@@ -49,9 +49,9 @@ class Module (BaseModule, gprowl.GmailIdleNotifier):
       msubj = decode_header(mail['Subject']).encode('utf-8')
 
       ''' Parse name '''
-      name = ' ' + self.config.get('Module/IMAP', 'name').encode('utf-8')
+      name = self.config.get('Module/IMAP', 'name').encode('utf-8')
       name = name.replace('%from', mfrom)
-      name = u'\u2709'.encode('utf-8') + name
+      name = u'\ue103'.encode('utf-8') + ' ' + name
 
       ''' Parse format '''
       text = self.config.get('Module/IMAP', 'text').encode('utf-8')

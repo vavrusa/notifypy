@@ -15,8 +15,9 @@ class Module (BaseModule):
       text = self.config.get('Module/Welcome', 'text')
       text = text.replace('%name', socket.gethostname())
       text = text.replace('%now', dt.strftime('%d.%m. %H:%M'))
-      self.notificator.notify(self.config.get('Module/Welcome', 'name'),
-		              text)
+      name = self.config.get('Module/Welcome', 'name')
+      name = u'\uE00A'.encode('utf-8') + ' ' + name
+      self.notificator.notify(name, text)
 
    def unload(self):
       pass
